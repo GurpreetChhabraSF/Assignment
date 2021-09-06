@@ -1,0 +1,43 @@
+<div class="text-right">
+  <button class="btn btn-primary my-2" (click)="loadUserData()">
+    {{ btnTxt }}
+  </button>
+</div>
+<table class="table table-striped table-dark" *ngIf="userList?.length">
+    <thead>
+      <tr>
+        <th *ngFor="let config of tableConfig;">{{ config.value }}</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userList; let i = index;">
+        <ng-container *ngFor="let config of tableConfig">
+          <td [ngClass]="config.key">
+            <ng-container *ngIf="config.type === 'input'">
+              <input class="user-input form-control" *ngIf="config.key" [(ngModel)]="user[config.key]" 
+              [readonly]="i !== editIndex || config.readonly" />
+            </ng-container>
+            <ng-container *ngIf="config.type === 'dropdown'">
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Select Roles</option>
+                <ng-container *ngFor="let role of roles">
+                  <option value="role.id">{{ role.name }}</option>
+                </ng-container>
+              </select>
+            </ng-container>
+          </td>
+        </ng-container>
+        <td class="action">
+          <ng-container *ngIf="(!editIndex && editIndex !== 0) || i !== editIndex">
+            <i class="fa fa-edit edit-icon" (click)="enableEditing(i)"></i>
+            <i class="fa fa-trash delete-icon" (click)="deleteUser(i)"></i>
+          </ng-container>
+          <div *ngIf="(editIndex || editIndex === 0) && i === editIndex">
+            <button class="btn-sm btn-primary" (click)="editUser()">Save</button>
+            <button class="btn-sm btn-danger" (click)="cancelEditing()">Cancel</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>

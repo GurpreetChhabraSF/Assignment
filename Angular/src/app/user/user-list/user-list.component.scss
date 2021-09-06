@@ -1,0 +1,32 @@
+$primary-color: #1eaef0;
+@mixin action-icon {
+  border-radius: 5px;
+  font-size: 11px;
+  margin: 3px;
+  padding: 4px;
+}
+.edit-icon {
+  background-color: $primary-color;
+  color: #fff;
+  @include action-icon;
+}
+
+.delete-icon {
+  background-color: #dc3545;
+  color: #fff;
+  @include action-icon;
+}
+
+.user-input:read-only {
+  border: none;
+  background: none;
+  color: #fff;
+}
+.action {
+  width: 12%;
+}
+.btn-sm {
+  margin: 4px 5px 0 0;
+  padding: 2px 5px;
+}
+
