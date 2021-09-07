@@ -8,7 +8,10 @@ import {
   RestExplorerComponent
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
+import * as dotenv from 'dotenv';
+import {AuthenticationComponent, Strategies} from 'loopback4-authentication';
 import path from 'path';
+import {BearerTokenVerifyProvider} from './providers/bearer-token-verify.provider';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -18,6 +21,8 @@ export class LoopbackApplication extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
+
+    dotenv.config();
 
     this.configure(LoggingBindings.COMPONENT).to({
       enableFluent: false, // default to true
@@ -41,6 +46,13 @@ export class LoopbackApplication extends BootMixin(
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
+
+    // Add authentication component
+    this.component(AuthenticationComponent)
+
+    this.bind(Strategies.Passport.BEARER_TOKEN_VERIFIER).toProvider(
+      BearerTokenVerifyProvider,
+    );
 
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({

@@ -4,27 +4,22 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
+import {authenticate, STRATEGY} from 'loopback4-authentication';
 import {Roles} from '../models';
 import {RolesRepository} from '../repositories';
 
 export class RolesController {
   constructor(
     @repository(RolesRepository)
-    public rolesRepository : RolesRepository,
-  ) {}
+    public rolesRepository: RolesRepository,
+  ) { }
 
   @post('/roles')
   @response(200, {
@@ -58,6 +53,7 @@ export class RolesController {
     return this.rolesRepository.count(where);
   }
 
+  @authenticate(STRATEGY.BEARER)
   @get('/roles')
   @response(200, {
     description: 'Array of Roles model instances',
